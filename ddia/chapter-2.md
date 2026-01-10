@@ -1,5 +1,3 @@
-# Designing Data-Intensive Applications (DDIA)
-
 ## Chapter 2: Data Models and Query Languages
 
 ## 1. Introduction to Data Models
