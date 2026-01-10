@@ -1,92 +1,140 @@
-## Chapter 1 — Reliable, Scalable, and Maintainable Applications
+## Chapter 1: Reliable, Scalable, and Maintainable Applications
 
-### What is a Data-Intensive Application?
+## 1. What Are Data-Intensive Applications?
 
-Data-intensive applications focus on handling large amounts of data, where **data management** (not CPU) is the primary challenge.
+Data-intensive applications are systems whose primary challenges come from the **amount of data**, the **complexity of data processing**, and the **need for reliability and scalability**, rather than purely from CPU-intensive computation.
 
-Common building blocks:
+Typical building blocks of data-intensive applications include:
 
-* **Databases** — store data
-* **Caches** — speed up reads
-* **Search indexes** — search/filter data
-* **Stream processing** — process events
-* **Batch processing** — periodic large-scale computation
+* **Databases** – storing and querying data
+* **Caches** – speeding up read access
+* **Search indexes** – enabling full-text search and filtering
+* **Stream processors** – handling continuous flows of data
+* **Batch processors** – processing large volumes of data periodically
 
-Most real systems combine several of these components.
-
----
-
-### Three Core System Qualities
-
-#### 1. Reliability
-
-> The system continues to work correctly, even when things go wrong.
-
-**Typical faults**:
-
-* Hardware failures (disk, memory, network)
-* Software bugs
-* Human error (misconfiguration, bad deployments)
-
-**Key ideas**:
-
-* Faults are expected; failures are faults that reach users
-* Design for fault tolerance
-* Use redundancy and isolation
-
-Examples:
-
-* Replication
-* Graceful degradation
-* Idempotent operations
+Modern applications usually combine several of these components into a single system.
 
 ---
 
-#### 2. Scalability
+## 2. Common Characteristics of Data Systems
 
-> The system can handle increased load.
+Although databases, queues, and caches may appear different, they share common goals:
 
-**Load** can be measured by:
+* **Storing data**
+* **Processing data**
+* **Transmitting data**
+
+The distinction between these systems has blurred over time, leading to **hybrid data systems** that provide multiple capabilities in one platform.
+
+---
+
+## 3. Three Key Concerns in Data-Intensive Applications
+
+The chapter introduces three core principles that guide the design of data systems:
+
+### 3.1 Reliability
+
+**Reliability** means that the system continues to work correctly even when things go wrong.
+
+A reliable system:
+
+* Performs the correct operations
+* Returns correct results
+* Maintains data integrity
+* Meets performance expectations under normal and abnormal conditions
+
+#### Common Faults
+
+* **Hardware faults** (disk failures, power outages)
+* **Software faults** (bugs, memory leaks, cascading failures)
+* **Human errors** (misconfiguration, operational mistakes)
+
+Faults are inevitable; reliability is about **fault tolerance**, not fault prevention.
+
+---
+
+### 3.2 Scalability
+
+**Scalability** is the system’s ability to handle increased load gracefully.
+
+Load can increase in multiple dimensions:
 
 * Requests per second
-* Number of users
 * Data volume
+* Number of users
+* Complexity of queries
 
-**Performance metrics**:
+#### Describing Load
 
+Load is best described using **quantitative metrics**, such as:
+
+* Throughput (requests/sec)
 * Latency (response time)
-* Throughput
+* Read vs write ratios
 
-**Latency percentiles** (e.g., p95, p99) are more meaningful than averages.
+#### Describing Performance
 
-**Scaling approaches**:
+Performance is commonly measured using:
 
-* **Vertical scaling** — bigger machine
-* **Horizontal scaling** — more machines
+* **Response time** (especially percentiles like p95 or p99)
+* **Throughput**
 
----
+Tail latency is particularly important because slow requests can disproportionately affect user experience.
 
-#### 3. Maintainability
+#### Approaches to Scaling
 
-> The system is easy to operate, understand, and evolve.
+* **Vertical scaling**: increasing resources on a single machine
+* **Horizontal scaling**: distributing load across multiple machines
 
-Three design principles:
-
-* **Operability** — easy to run and monitor
-* **Simplicity** — reduce accidental complexity
-* **Evolvability** — easy to change over time
-
-Techniques:
-
-* Clear abstractions
-* Good observability
-* Automation
+Scalable systems are designed with **elasticity** in mind.
 
 ---
 
-### Summary
+### 3.3 Maintainability
 
-Reliable systems handle faults, scalable systems handle growth, and maintainable systems support long-term development.
+**Maintainability** refers to how easy it is to operate, modify, and extend the system over time.
+
+The chapter breaks maintainability into three sub-goals:
+
+#### Operability
+
+* Make systems easy to run and monitor
+* Provide good observability and tooling
+
+#### Simplicity
+
+* Reduce system complexity
+* Prefer clear abstractions
+* Avoid unnecessary cleverness
+
+#### Evolvability
+
+* Allow the system to change over time
+* Support new features and changing requirements
+
+Well-designed systems anticipate change rather than resist it.
 
 ---
 
+## 4. Trade-offs in System Design
+
+There is no single "best" data system. Every design involves **trade-offs**, such as:
+
+* Consistency vs availability
+* Latency vs durability
+* Simplicity vs performance
+
+Understanding these trade-offs is a core skill for system designers.
+
+---
+
+## 5. Summary of Chapter 1
+
+Chapter 1 sets the foundation for the rest of DDIA by:
+
+* Defining what data-intensive applications are
+* Introducing reliability, scalability, and maintainability as guiding principles
+* Emphasizing fault tolerance over fault avoidance
+* Highlighting the importance of metrics and real-world constraints
+
+These concepts reappear throughout the book as lenses for evaluating different data system designs.
