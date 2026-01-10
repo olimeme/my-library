@@ -1,149 +1,212 @@
-## Chapter 2 — Data Models and Query Languages
+# Designing Data-Intensive Applications (DDIA)
 
-### Why Data Models Matter
+## Chapter 2: Data Models and Query Languages
 
-Data models:
+## 1. Introduction to Data Models
 
-* Shape how data is structured
-* Influence how applications are written
-* Affect performance and scalability
+A **data model** defines how data is structured, stored, and manipulated. It shapes:
 
-They are the **interface** between data and code.
+* How applications are written
+* How data is queried and updated
+* How systems evolve over time
+
+Choosing the right data model is one of the most important architectural decisions in a data-intensive application.
 
 ---
 
-### Relational Model
+## 2. Relational Model
 
-**Key characteristics**:
+### 2.1 Overview
 
-* Data stored in tables (rows & columns)
-* Fixed schema
-* SQL as query language
+The **relational model**, introduced by Edgar F. Codd in 1970, represents data as:
 
-**Strengths**:
+* **Relations (tables)**
+* **Rows (tuples)**
+* **Columns (attributes)**
 
-* Mature ecosystem
-* Strong consistency guarantees
-* Powerful joins
+Each table has a defined schema, and relationships are expressed using **foreign keys**.
 
-**Use cases**:
+### 2.2 Strengths of the Relational Model
 
-* Transactions
-* Structured data
+* Strong theoretical foundation
+* Declarative query language (**SQL**)
+* Powerful joins across tables
+* Data integrity via constraints
+* Mature tooling and ecosystem
+
+Relational databases are particularly good for applications with:
+
+* Well-understood schemas
 * Complex queries
+* Strong consistency requirements
+
+### 2.3 Schema-on-Write
+
+Relational databases typically enforce **schema-on-write**:
+
+* Data must conform to the schema before being written
+* Errors are caught early
+* Schema changes can be costly
 
 ---
 
-### NoSQL Models
+## 3. NoSQL Data Models
 
-Motivations:
+NoSQL systems emerged to address scalability, flexibility, and performance limitations of traditional relational databases.
 
-* Scalability
-* Flexibility
-* High availability
+### 3.1 Key-Value Stores
 
-#### 1. Key-Value Stores
-
-* Simple lookup by key
-* Very fast
-* Limited querying
-
-Examples: Redis, DynamoDB
-
----
-
-#### 2. Document Model
-
-* Semi-structured (JSON-like)
-* Schema-on-read
-* Nested data
-
-**Pros**:
-
-* Flexible schema
-* Natural mapping to application objects
-
-**Cons**:
-
-* Poor support for joins
-* Data duplication
-
-Examples: MongoDB, CouchDB
-
----
-
-#### 3. Column-Family Stores
-
-* Data grouped by columns
-* Optimized for large-scale analytics
-
-Examples: Cassandra, HBase
-
----
-
-### Relational vs Document Model
-
-| Aspect        | Relational     | Document           |
-| ------------- | -------------- | ------------------ |
-| Schema        | Fixed          | Flexible           |
-| Joins         | Strong support | Weak/none          |
-| Data locality | Poor           | Good               |
-| Normalization | Encouraged     | Often denormalized |
-
----
-
-### Query Languages
-
-#### Declarative (e.g., SQL)
-
-* Specify *what* you want
-* Database decides *how*
-* Easier to optimize
-
-#### Imperative
-
-* Specify step-by-step logic
-* More control, less optimization
-
-Declarative queries are generally preferred.
-
----
-
-### Graph Data Models
-
-Used when relationships are first-class citizens.
-
-**Components**:
-
-* Vertices (nodes)
-* Edges (relationships)
+* Store data as a simple key → value mapping
+* Very fast reads and writes
+* Limited querying capabilities
 
 **Use cases**:
+
+* Caching
+* Session storage
+* User preferences
+
+---
+
+### 3.2 Document Model
+
+* Data stored as **documents** (e.g., JSON, BSON)
+* Documents contain nested structures
+* Schema is flexible or implicit
+
+#### Advantages
+
+* Natural fit for hierarchical data
+* Reduces need for joins
+* Easier schema evolution
+
+#### Disadvantages
+
+* Harder to enforce data consistency
+* Poor support for cross-document relationships
+
+Document databases typically use **schema-on-read**.
+
+---
+
+### 3.3 Column-Family (Wide-Column) Stores
+
+* Data stored by columns rather than rows
+* Inspired by Google Bigtable
+* Optimized for large-scale, distributed workloads
+
+**Use cases**:
+
+* Time-series data
+* Analytical queries
+* Large datasets with predictable access patterns
+
+---
+
+### 3.4 Graph Data Model
+
+Graph databases represent data as:
+
+* **Vertices (nodes)**
+* **Edges (relationships)**
+
+Edges can have properties and types.
+
+#### When Graphs Are Useful
+
+* Highly interconnected data
+* Many-to-many relationships
+* Traversal-heavy queries
+
+**Examples**:
 
 * Social networks
 * Recommendation systems
 * Fraud detection
 
-**Query languages**:
+---
 
-* Cypher
-* SPARQL
-* Gremlin
+## 4. Query Languages
+
+### 4.1 Declarative vs Imperative Queries
+
+* **Imperative**: specify how to compute results (step-by-step)
+* **Declarative**: specify what result you want
+
+Declarative queries allow the database to:
+
+* Optimize execution
+* Choose efficient query plans
+* Improve performance without changing application code
+
+SQL is a declarative language.
 
 ---
 
-### Summary
+### 4.2 SQL
 
-* Different data models suit different problems
-* Relational and NoSQL models are complementary
-* Choose based on access patterns and relationships
+Key features:
+
+* Joins
+* Aggregations
+* Subqueries
+* Index utilization
+
+SQL works well across different storage engines due to its abstraction over physical data layout.
+
+---
+
+### 4.3 Query Languages for NoSQL
+
+Examples include:
+
+* MongoDB query language
+* Cassandra CQL
+* Elasticsearch DSL
+
+Many NoSQL query languages are **restricted** compared to SQL, trading expressiveness for performance and scalability.
 
 ---
 
-### Key Takeaways
+### 4.4 Graph Query Languages
 
-* System qualities matter as much as features
-* Data models strongly influence system design
-* There is no single best database
+* **Cypher** (Neo4j)
+* **SPARQL** (RDF)
+
+Designed for expressing graph traversals concisely and efficiently.
 
 ---
+
+## 5. Schema Flexibility and Evolution
+
+### 5.1 Schema-on-Read vs Schema-on-Write
+
+| Aspect          | Schema-on-Write | Schema-on-Read |
+| --------------- | --------------- | -------------- |
+| Validation      | At write time   | At read time   |
+| Flexibility     | Low             | High           |
+| Error detection | Early           | Late           |
+
+Neither approach is inherently better; the choice depends on application needs.
+
+---
+
+## 6. Data Locality and Performance
+
+* Document models encourage **data locality** by storing related data together
+* Relational models normalize data, sometimes requiring joins
+* Locality can significantly impact performance in distributed systems
+
+---
+
+## 7. Polyglot Persistence
+
+**Polyglot persistence** means using multiple data storage technologies within one application, each chosen for a specific purpose.
+
+Example:
+
+* Relational DB for transactions
+* Document DB for user profiles
+* Search index for full-text search
+
+This approach increases flexibility but adds operational complexity.
